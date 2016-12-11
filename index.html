@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        cursor: default;
+        text-align: center;
+      }
+      div {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #status {
+        height: auto;
+        justify-content: flex-end;
+        color: #aaa;
+        margin: 0;
+        bottom: 0;
+      }
+      #status p {
+        margin: 0;
+      }
+      #popup {
+        display: none;
+        background-color: rgba(0, 0, 0, .25);
+      }
+      #popup h1 {
+        margin: 0;
+      }
+      #popup section {
+        box-shadow: 0 0 20px rgba(0, 0, 0, .75);
+        padding: 1em;
+        background-color: #fff;
+        border-radius: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <button id="helloButton">Hello?</button>
+    </div>
+    <div id="status">
+      <p>
+        <script>const app = require('electron').remote.app; document.write(app.getName() + ' ' + app.getVersion())</script>
+      </p>
+      <p>
+        running on electron <script>document.write(process.versions.electron)</script>,
+        node.js <script>document.write(process.versions.node)</script>
+        and chromium <script>document.write(process.versions.chrome)</script>
+      </p>
+    </div>
+    <div id="popup">
+      <section>
+        <h1>Hello?</h1>
+        <p>Hello World!</p>
+        <button>Dismiss</button>
+      </section>
+    </div>
+  </body>
+  <script>
+    const helloButtonEl = document.getElementById('helloButton');
+    const popupEl = document.getElementById('popup');
+
+    helloButtonEl.addEventListener('click', e => {
+      popupEl.style.display = 'flex';
+    });
+
+    popupEl.addEventListener('click', e => {
+      popupEl.style.display = 'none';
+    });
+  </script>
+  <script>
+    const KeyCode = {
+      F5:   116,
+      F12:  123
+    };
+    document.addEventListener('keydown', e => {
+      switch (e.which) {
+        case KeyCode.F12:
+          require('electron').remote.getCurrentWindow().toggleDevTools();
+          break;
+        case KeyCode.F5:
+          location.reload();
+          break;
+      }
+    });
+  </script>
+</html>
