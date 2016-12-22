@@ -66,16 +66,23 @@
       <section>
         <h1>Hello?</h1>
         <p>Hello World!</p>
+        <p>your ip is <span id="ipAddress"></span></p>
         <button>Dismiss</button>
       </section>
     </div>
   </body>
   <script>
     const helloButtonEl = document.getElementById('helloButton');
+    const ipAddressEl = document.getElementById('ipAddress');
     const popupEl = document.getElementById('popup');
 
     helloButtonEl.addEventListener('click', e => {
-      popupEl.style.display = 'flex';
+      fetch('http://httpbin.org/ip')
+        .then(response => response.json())
+        .then(data => {
+          ipAddressEl.textContent = data.origin;
+          popupEl.style.display = 'flex';
+        });
     });
 
     popupEl.addEventListener('click', e => {
