@@ -45,6 +45,9 @@
         background-color: #fff;
         border-radius: 15px;
       }
+      #location {
+        text-transform: lowercase;
+      }
     </style>
   </head>
   <body>
@@ -66,7 +69,7 @@
       <section>
         <h1>Hello?</h1>
         <p>Hello World!</p>
-        <p>your ip is <span id="ipAddress"></span></p>
+        <p>your ip is <span id="ipAddress"></span><br><span id="location"></span></p>
         <button>Dismiss</button>
       </section>
     </div>
@@ -74,13 +77,15 @@
   <script>
     const helloButtonEl = document.getElementById('helloButton');
     const ipAddressEl = document.getElementById('ipAddress');
+    const locationEl = document.getElementById('location');
     const popupEl = document.getElementById('popup');
 
     helloButtonEl.addEventListener('click', e => {
-      fetch('http://httpbin.org/ip')
+      fetch('http://ipinfo.io/json')
         .then(response => response.json())
         .then(data => {
-          ipAddressEl.textContent = data.origin;
+          ipAddressEl.textContent = data.ip;
+          locationEl.textContent = [data.city, data.region, data.country, data.org].filter(s => s).join(', ');
           popupEl.style.display = 'flex';
         });
     });
