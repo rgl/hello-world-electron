@@ -84,7 +84,11 @@
   </script>
   <script>
     const package = require('./package.json');
-    const updateFeedUrl = process.platform === 'win32' ? `${package.build.squirrelWindows.remoteReleases}${package.version}/stable/` : '';
+    const updateFeedUrl = process.platform === 'win32'
+      ? `${package.build.squirrelWindows.remoteReleases}${package.version}/stable/`
+      : process.platform === 'darwin'
+        ? `${package.build.squirrelWindows.remoteReleases.replace('windows', 'osx')}${package.version}/stable/`
+        : '';
     if (updateFeedUrl) {
       let updateState = '';
       const autoUpdater = require('electron').remote.autoUpdater;
