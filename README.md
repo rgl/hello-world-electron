@@ -1,5 +1,7 @@
 # About
 
+[![Build status](https://github.com/rgl/hello-world-electron/workflows/Build/badge.svg)](https://github.com/rgl/hello-world-electron/actions?query=workflow%3ABuild)
+
 The classic Hello World. Electron flavoured.
 
 ## Develop
@@ -69,5 +71,20 @@ pwsh -Command 'Get-AuthenticodeSignature dist/hello-world-electron-1.3.0.msi | F
 
 ## References
 
+* [WiX: Errors running validation](https://docs.firegiant.com/wix/tools/validation/#errors-running-validation)
+    * `electron-builder`, to build the `msi`, uses [WiX](https://github.com/wixtoolset/wix), which requires administrator-level privileges. For more information see:
+        * [Errors running validation](https://docs.firegiant.com/wix/tools/validation/#errors-running-validation).
+        * [MSI package validation](https://learn.microsoft.com/en-us/windows/win32/msi/package-validation).
+        * [`wix msi validate`](https://docs.firegiant.com/wix/tools/wixexe/#msivalidate).
+    * To disable the validation, edit `package.json`, and modify the `build.msi.additionalLightArgs` property to use the `-sval` (aka skip validation) argument, e.g.:
+        ```json
+        {
+            "build": {
+                "msi": {
+                    "additionalLightArgs": ["-sval"]
+                }
+            }
+        }
+        ```
 * [electron.svg](https://thesvg.org/icon/electron)
 * [osslsigncode](https://github.com/mtrojnar/osslsigncode)
