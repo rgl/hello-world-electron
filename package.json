@@ -1,29 +1,40 @@
 {
-  "name": "hello-world",
-  "version": "1.2.0",
-  "description": "the classic hello world on Electron",
+  "name": "hello-world-electron",
+  "version": "1.3.0",
+  "description": "The classic Hello World. Electron flavoured.",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "pack": "build --dir",
-    "dist": "build"
+    "pack": "npx electron-builder --dir",
+    "dist": "npx electron-builder"
   },
   "repository": "https://github.com/rgl/hello-world-electron",
   "author": "Rui Lopes <rgl@ruilopes.com> (http://ruilopes.com)",
   "build": {
-    "appId": "com.ruilopes.hello-world",
-    "squirrelWindows": {
-      "remoteReleases": "https://ers.example.com/update/windows_64/"
-    },
+    "appId": "com.ruilopes.hello-world-electron",
+    "icon": "electron.svg",
     "win": {
-      "target": "squirrel",
-      "certificateFile": "example-code-signing.p12",
-      "signingHashAlgorithms": ["sha256"]
-    }
+      "target": ["nsis", "msi"],
+      "signtoolOptions": {
+        "certificateFile": "example-code-signing.p12",
+        "signingHashAlgorithms": ["sha256"]
+      }
+    },
+    "nsis": {
+      "artifactName": "${productName}-setup-${version}.${ext}"
+    },
+    "msi": {
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "files": [
+      "*.css",
+      "*.html",
+      "*.js"
+    ]
   },
   "devDependencies": {
-    "electron": "^1.4.13",
-    "electron-builder": "^10.6.3"
+    "electron": "^43.1.1",
+    "electron-builder": "^26.15.7"
   }
 }

@@ -2,53 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' https://ipinfo.io;" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" defer></script>
     <title>Hello World</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: sans-serif;
-        cursor: default;
-        text-align: center;
-      }
-      div {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      #status {
-        height: auto;
-        justify-content: flex-end;
-        color: #aaa;
-        margin: 0;
-        bottom: 0;
-      }
-      #status p {
-        margin: 0;
-      }
-      #status a {
-        color: inherit;
-      }
-      #popup {
-        display: none;
-        background-color: rgba(0, 0, 0, .25);
-      }
-      #popup h1 {
-        margin: 0;
-      }
-      #popup section {
-        box-shadow: 0 0 20px rgba(0, 0, 0, .75);
-        padding: 1em;
-        background-color: #fff;
-        border-radius: 15px;
-      }
-      #location {
-        text-transform: lowercase;
-      }
-    </style>
   </head>
   <body>
     <div>
@@ -56,13 +15,14 @@
     </div>
     <div id="status">
       <p>
-        <script>const app = require('electron').remote.app; document.write(app.getName() + ' ' + app.getVersion())</script>
+        <span id="app-name"></span>
+        <span id="app-version"></span>
         <a id='update'></a>
       </p>
       <p>
-        running on electron <script>document.write(process.versions.electron)</script>,
-        node.js <script>document.write(process.versions.node)</script>
-        and chromium <script>document.write(process.versions.chrome)</script>
+        running on electron <span id="electron-version"></span>,
+        node.js <span id="node-version"></span>,
+        and chromium <span id="chrome-version"></span>.
       </p>
     </div>
     <div id="popup">
@@ -74,92 +34,4 @@
       </section>
     </div>
   </body>
-  <script>
-    const helloButtonEl = document.getElementById('helloButton');
-    const ipAddressEl = document.getElementById('ipAddress');
-    const locationEl = document.getElementById('location');
-    const popupEl = document.getElementById('popup');
-
-    helloButtonEl.addEventListener('click', e => {
-      fetch('http://ipinfo.io/json')
-        .then(response => response.json())
-        .then(data => {
-          ipAddressEl.textContent = data.ip;
-          locationEl.textContent = [data.city, data.region, data.country, data.org].filter(s => s).join(', ');
-          popupEl.style.display = 'flex';
-        });
-    });
-
-    popupEl.addEventListener('click', e => {
-      popupEl.style.display = 'none';
-    });
-  </script>
-  <script>
-    const package = require('./package.json');
-    const updateFeedUrl = process.platform === 'win32'
-      ? `${package.build.squirrelWindows.remoteReleases}${package.version}/stable/`
-      : process.platform === 'darwin'
-        ? `${package.build.squirrelWindows.remoteReleases.replace('windows', 'osx')}${package.version}/stable/`
-        : '';
-    if (updateFeedUrl) {
-      let updateState = '';
-      const autoUpdater = require('electron').remote.autoUpdater;
-      const updateEl = document.getElementById('update');
-      updateEl.href = '#';
-      updateEl.textContent = 'check for update';
-      updateEl.addEventListener('click', (e) => {
-        updateEl.setAttribute('disabled', 'true');
-        switch (updateState) {
-          case '':
-            autoUpdater.checkForUpdates();
-            break;
-          case 'update-downloaded':
-            autoUpdater.quitAndInstall();
-            break;
-        }
-      });
-      autoUpdater.setFeedURL(updateFeedUrl);
-      autoUpdater.on('error', (e) => {
-        updateState = '';
-        updateEl.textContent = 'retry check for update';
-        updateEl.removeAttribute('disabled');
-      });
-      autoUpdater.on('checking-for-update', (e) => {
-        updateState = 'checking-for-update';
-        updateEl.textContent = 'checking for update...';
-        updateEl.setAttribute('disabled', 'true');
-      });
-      autoUpdater.on('update-available', (e) => {
-        updateState = 'update-available';
-        updateEl.textContent = 'downloading update...';
-        updateEl.setAttribute('disabled', 'true');
-      });
-      autoUpdater.on('update-not-available', (e) => {
-        updateState = '';
-        updateEl.textContent = 'check for update';
-        updateEl.removeAttribute('disabled');
-      });
-      autoUpdater.on('update-downloaded', (e, releaseNotes, releaseName, releaseDate, updateURL) => {
-        updateState = 'update-downloaded';
-        updateEl.textContent = `restart to use release ${releaseName}`;
-        updateEl.removeAttribute('disabled');
-      });
-    }
-  </script>
-  <script>
-    const KeyCode = {
-      F5:   116,
-      F12:  123
-    };
-    document.addEventListener('keydown', e => {
-      switch (e.which) {
-        case KeyCode.F12:
-          require('electron').remote.getCurrentWindow().toggleDevTools();
-          break;
-        case KeyCode.F5:
-          location.reload();
-          break;
-      }
-    });
-  </script>
 </html>

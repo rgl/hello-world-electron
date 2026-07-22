@@ -24,7 +24,7 @@ openssl x509 -req -sha256 \
     -extensions a \
     -extfile <(echo "[a]
         basicConstraints=critical,CA:TRUE,pathlen:0
-        keyUsage=critical,digitalSignature,keyCertSign,cRLSign
+        keyUsage=critical,keyCertSign,cRLSign
         ") \
     -days 365 \
     -in  $ca_file_name-csr.pem \
