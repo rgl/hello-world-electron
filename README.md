@@ -55,6 +55,9 @@ osslsigncode verify \
 osslsigncode verify \
     -in dist/hello-world-electron-1.3.0.msi \
     -CAfile example-code-signing-ca-crt.pem
+osslsigncode verify \
+    -in dist/hello-world-electron-1.3.0.msix \
+    -CAfile example-code-signing-ca-crt.pem
 ```
 
 Show the code signature:
@@ -67,6 +70,13 @@ pwsh -Command 'Import-Certificate example-code-signing-ca-crt.pem -CertStoreLoca
 pwsh -Command 'Get-AuthenticodeSignature dist/win-unpacked/hello-world-electron.exe | Format-List'
 pwsh -Command 'Get-AuthenticodeSignature dist/hello-world-electron-setup-1.3.0.exe | Format-List'
 pwsh -Command 'Get-AuthenticodeSignature dist/hello-world-electron-1.3.0.msi | Format-List'
+pwsh -Command 'Get-AuthenticodeSignature dist/hello-world-electron-1.3.0.msix | Format-List'
+```
+
+Show the msix app manifest:
+
+```bash
+unzip -p dist/hello-world-electron-1.3.0.msix AppxManifest.xml
 ```
 
 ## References

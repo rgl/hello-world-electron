@@ -5,8 +5,7 @@ ca_file_name=example-code-signing-ca
 ca_common_name='Example Code Signing CA'
 
 file_name=example-code-signing
-common_name='Rui Lopes'
-email_address='rgl@example.com'
+common_name='ruilopes.com'
 
 # create code signing CA certificate.
 openssl genrsa \
@@ -39,7 +38,7 @@ openssl genrsa \
 chmod 400 $file_name-keypair.pem
 openssl req -new \
     -sha256 \
-    -subj "/CN=$common_name/emailAddress=$email_address" \
+    -subj "/CN=$common_name" \
     -key $file_name-keypair.pem \
     -out $file_name-csr.pem
 openssl x509 -req -sha256 \

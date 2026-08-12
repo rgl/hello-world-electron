@@ -33,3 +33,4 @@ jobs:
             example-code-signing*
             dist/*.exe
             dist/*.msi
+            dist/*.msix

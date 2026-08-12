@@ -15,16 +15,28 @@
     "appId": "com.ruilopes.hello-world-electron",
     "icon": "electron.svg",
     "win": {
-      "target": ["nsis", "msi"],
-      "signtoolOptions": {
+      "target": [
+        "nsis",
+        "msi",
+        "msix"
+      ],
+      "sign": {
+        "type": "signtool",
         "certificateFile": "example-code-signing.p12",
-        "signingHashAlgorithms": ["sha256"]
+        "signingHashAlgorithms": [
+          "sha256"
+        ]
       }
     },
     "nsis": {
       "artifactName": "${productName}-setup-${version}.${ext}"
     },
     "msi": {
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "msix": {
+      "identityName": "HelloWorldElectron",
+      "displayName": "Hello World Electron",
       "artifactName": "${productName}-${version}.${ext}"
     },
     "files": [
@@ -35,6 +47,6 @@
   },
   "devDependencies": {
     "electron": "^43.4.0",
-    "electron-builder": "^26.15.7"
+    "electron-builder": "^27.0.0-alpha.6"
   }
 }
