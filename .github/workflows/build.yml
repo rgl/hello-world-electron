@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - name: Configure git
         run: git config --global core.autocrlf false
