@@ -14,9 +14,9 @@ openssl genrsa \
     2048 \
     2>/dev/null
 chmod 400 $ca_file_name-keypair.pem
-openssl req -new \
+MSYS2_ARG_CONV_EXCL='-subj=' openssl req -new \
     -sha256 \
-    -subj "/CN=$ca_common_name" \
+    "-subj=/CN=$ca_common_name" \
     -key $ca_file_name-keypair.pem \
     -out $ca_file_name-csr.pem
 openssl x509 -req -sha256 \
@@ -37,9 +37,9 @@ openssl genrsa \
     2048 \
     2>/dev/null
 chmod 400 $file_name-keypair.pem
-openssl req -new \
+MSYS2_ARG_CONV_EXCL='-subj=' openssl req -new \
     -sha256 \
-    -subj "/CN=$common_name/emailAddress=$email_address" \
+    "-subj=/CN=$common_name/emailAddress=$email_address" \
     -key $file_name-keypair.pem \
     -out $file_name-csr.pem
 openssl x509 -req -sha256 \
