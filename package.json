@@ -25,7 +25,10 @@
       "artifactName": "${productName}-setup-${version}.${ext}"
     },
     "msi": {
-      "artifactName": "${productName}-${version}.${ext}"
+      "artifactName": "${productName}-${version}.${ext}",
+      "additionalLightArgs": [
+        "-sval"
+      ]
     },
     "files": [
       "*.css",
